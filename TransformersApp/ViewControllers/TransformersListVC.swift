@@ -44,7 +44,143 @@ class TransformersListVC: UIViewController {
     
     
     @IBAction func startBattle(_ sender: Any) {
-        print("battle commenced")
+        let array = transformersManager.getTransformersList()
+        
+        var autobotsArray:[Transformer] = []
+        var decepticonsArray:[Transformer] = []
+        
+        for i in 0..<array.count{
+            if(array[i].team == "A"){
+                autobotsArray.append(array[i])
+            }else if(array[i].team == "D"){
+                decepticonsArray.append(array[i])
+            }
+        }
+        
+        autobotsArray.sort(by: {$0.rank > $1.rank})
+        decepticonsArray.sort(by: {$0.rank > $1.rank})
+        
+        
+        var matchStarted = true
+        var autobotsEliminated = 0
+        var decepticonsEliminated = 0
+        
+        while matchStarted{
+            if(autobotsArray.count == 0 || decepticonsArray.count == 0){
+                matchStarted = false
+            }else{
+            
+            resultOfFight(autobot: autobotsArray[0], decepticon: decepticonsArray[0]){
+                winner in
+                if(winner == "autobot"){
+                    decepticonsArray.remove(at: 0)
+                    decepticonsEliminated = decepticonsEliminated + 1
+                }else if(winner == "decepticon"){
+                    autobotsArray.remove(at: 0)
+                    autobotsEliminated = autobotsEliminated + 1
+                }else if(winner == "none"){
+                    autobotsArray.removeAll()
+                    decepticonsArray.removeAll()
+                    self.showAlertWithOkButton(message: "Everything is destroyed")
+                    matchStarted = false
+                }else if(winner == "draw"){
+                    autobotsArray.remove(at: 0)
+                    decepticonsArray.remove(at: 0)
+                    
+                    decepticonsEliminated = decepticonsEliminated + 1
+                    autobotsEliminated = autobotsEliminated + 1
+                }
+            }
+            }
+        }
+        
+        if(autobotsEliminated > decepticonsEliminated){
+            self.showAlertWithOkButton(message: "Decepticons Won")
+        }else{
+            self.showAlertWithOkButton(message:"Autobots Won")
+        }
+    }
+    
+    
+    
+    private func resultOfFight(autobot:Transformer, decepticon: Transformer, winner: @escaping (String) -> Void){
+        
+        //Special Rules
+        if(autobot.name == "Optimus Prime" || autobot.name == "Predaking" ){
+            if(decepticon.name == "Optimus Prime" || decepticon.name == "Predaking" ){
+                print("all competitors destroyed")
+                winner("none")
+                return
+            
+            }else{
+                print("Autobot Domination")
+                winner("autobot")
+                return
+            }
+        }else if(decepticon.name == "Optimus Prime" || decepticon.name == "Predaking" ){
+            if(autobot.name == "Optimus Prime" || autobot.name == "Predaking" ){
+                print("all competitors destroyed")
+                winner("none")
+                return
+            }else{
+                print("Decepticon Domination")
+                winner("decepticon")
+                return
+            }
+        }
+        
+        
+        //Points Difference of courage, skill or strength
+        if((abs(autobot.courage - decepticon.courage)) >= 4){
+            if(autobot.courage > decepticon.courage){
+                print("Decepticon Ran away")
+                winner("autobot")
+                return
+            }else{
+                print("Autobot Ran away")
+                winner("decepticon")
+                return
+            }
+        }else if((abs(autobot.strength - decepticon.strength)) >= 3){
+            if(autobot.strength > decepticon.strength){
+                print("Decepticon Ran away")
+                winner("autobot")
+                return
+            }else{
+                print("Autobot Ran away")
+                winner("decepticon")
+                return
+            }
+        }else if((abs(autobot.skill - decepticon.skill)) >= 3){
+            if(autobot.skill > decepticon.skill){
+                print("Decepticon Ran away")
+                winner("autobot")
+                return
+            }else{
+                print("Autobot Ran away")
+                winner("decepticon")
+                return
+            }
+        }else{
+            //based on rating
+            
+            if(autobot.overallRating ?? 0 > decepticon.overallRating ?? 0){
+                print("Autobot Won the battle")
+                winner("autobot")
+                return
+            }else if(autobot.overallRating ?? 0 == decepticon.overallRating ?? 0){
+                print("its a tie")
+                winner("draw")
+                return
+            }else{
+                print("Decepticon won the battle")
+                winner("decepticon")
+                return
+            }
+        }
+        
+        winner("empty")
+        
     }
     
     
