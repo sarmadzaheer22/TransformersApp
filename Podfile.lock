@@ -1,0 +1,30 @@
+PODS:
+  - Alamofire (5.8.0)
+  - SDWebImage (5.18.1):
+    - SDWebImage/Core (= 5.18.1)
+  - SDWebImage/Core (5.18.1)
+  - ShadowView (1.4.3)
+  - UIGradient (1.3.2)
+
+DEPENDENCIES:
+  - Alamofire
+  - SDWebImage (~> 5.0)
+  - ShadowView
+  - UIGradient
+
+SPEC REPOS:
+  trunk:
+    - Alamofire
+    - SDWebImage
+    - ShadowView
+    - UIGradient
+
+SPEC CHECKSUMS:
+  Alamofire: 0e92e751b3e9e66d7982db43919d01f313b8eb91
+  SDWebImage: ebdbcebc7933a45226d9313bd0118bc052ad458b
+  ShadowView: d2d92fd2706b3f6a182be2147149db0b1cf7700d
+  UIGradient: 2364e9ebac232686db220713b4d42a68222fffb2
+
+PODFILE CHECKSUM: e4b1bfe2d70bfa0425394112cbb55070f605df09
+
+COCOAPODS: 1.12.1
